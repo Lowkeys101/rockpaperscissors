@@ -1,0 +1,17 @@
+.content, .results {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    margin: 10px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;    
+}
+
+button {
+    padding: 10px;
+    margin: 0px 5px;
+}

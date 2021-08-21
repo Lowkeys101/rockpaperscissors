@@ -30,44 +30,68 @@ function playerChoice() {
     }
     return playerOption;
 }
+
+
+let playerWins = 0;
+let computerWins = 0;
+let draws = 0;
+
+function haveAWinner(divContainer, divScore) {
+    if(playerWins === 5) {
+        divContainer.textContent = "You have won! Congratulations! "
+        divScore.textContent = "";
+
+        playerWins = 0;
+        computerWins = 0;
+        draws = 0;
+    }
+    if(computerWins === 5) {
+        divContainer.textContent = "Computer has won! Better luck next time!"
+        divScore.textContent = "";
+
+        playerWins = 0;
+        computerWins = 0;
+        draws = 0;
+    }
+}
 //check who wins and return a string with winner
 function playRound(playerSelection, computerSelection) {
     playerSelection = playerSelection.toLowerCase();
     computerSelection = computerSelection.toLowerCase();
+    const divContainer = document.querySelector(".content");
+    const divScore = document.querySelector(".results");
+    divScore.textContent = `Total score is: Player: ${playerWins}     Computer: ${computerWins}       Draws: ${draws}`;
+
     if (playerSelection === computerSelection) {
-        console.log(`It's a draw! You've picked ${playerSelection} and computer picked ${computerSelection}`);
-        return 0;
+        draws++;
+        divContainer.textContent = `It's a draw! You've picked ${playerSelection} and computer picked ${computerSelection}`;
+        divScore.textContent = `Total score is: Player: ${playerWins}     Computer: ${computerWins}       Draws: ${draws}`;
     } else if (
                 (playerSelection === "rock" && computerSelection === "paper") ||
                 (playerSelection === "paper" && computerSelection === "scissors") ||
                 (playerSelection === "scissors" && computerSelection === "rock")
               ) {
-                console.log(`You lose! You've picked ${playerSelection} and computer picked ${computerSelection}`);
-                return -1;
+                computerWins++;
+                divContainer.textContent = `You lose this round! You've picked ${playerSelection} and computer picked ${computerSelection}`;
+                divScore.textContent = `Total score is: Player: ${playerWins}     Computer: ${computerWins}       Draws: ${draws}`;
     } else {
-        console.log(`You win! You've picked ${playerSelection} and computer picked ${computerSelection}`);
-        return 1;
-    }                 
-}
-// play n rounds
-function game(n) {
-    let playerWins = 0;
-    let computerWins = 0;
-    let draws = 0;
-    let roundResult;
-    for(let i = 0; i < n; i++) {
-        roundResult = playRound(playerChoice(),computerPlay());
-        if (roundResult === 1) {
-            playerWins++;
-        } else if (roundResult === -1) {
-            computerWins++;
-        } else {
-            draws++;
-        }
+        playerWins++;
+        divContainer.textContent = `You win this round! You've picked ${playerSelection} and computer picked ${computerSelection}`;
+        divScore.textContent = `Total score is: Player: ${playerWins}     Computer: ${computerWins}       Draws: ${draws}`;
     }
-    console.log(`You have won ${playerWins} round(s). Computer have won ${computerWins} round(s) and ${draws} round(s) ended in a draw`)
 
-
+    haveAWinner(divContainer, divScore);                 
 }
-// play
-game(5);
+
+function addEventListenerToButtons() {
+    const buttons = document.querySelectorAll("button");
+    buttons.forEach(button => {
+        button.addEventListener("click", (e) => {
+            playRound(e.target.textContent, computerPlay());
+        });
+    });
+}
+
+addEventListenerToButtons();
+// play one round
+
